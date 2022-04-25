@@ -1,0 +1,16 @@
+<!DOCTYPE html> <!-- 문서타입 --> <html lang="ko">
+<!-- 휴먼랭귀지 --> <head> <meta charset="utf-8"> 
+<!-- 문자셋 --> <title>유투브 링크 GIF</title> 
+</head> <body> 
+<form method="post" class="well form-horizontal" id="contact_form">
+    {% csrf_token %}
+    {% for field in form %}
+    <p>  
+    {{ field.label_tag }}
+        {{field}}
+    </p>  
+    {% endfor %}
+    <input type="submit" value="Submit">
+</form>
+<!-- 끝머리 --> </body> </html>
+
