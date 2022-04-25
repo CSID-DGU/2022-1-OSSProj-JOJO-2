@@ -12,7 +12,5 @@ class MainView(View): # 회원가입 하는 View
 
     def post(self, request):
         form = URLform(request.POST)
-        if not form.is_valid():
-            ctx = {'form' : form}
-            return render(request, self.template_name, ctx)
+        ctx = {'form' : form}
         return render(request, self.template_name, ctx)
