@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-%u5617tt)(xccabw!=x!v(hg3v9-0+(=vpug3)^a&81*vd#2@^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'gif_to_mp4.apps.GifToMp4Config',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
