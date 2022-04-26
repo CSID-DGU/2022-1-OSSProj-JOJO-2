@@ -1,2 +1,3 @@
 .venv
 OSSP_GIF/OSSP_GIF/settings.py
+ossp_aws.pem
