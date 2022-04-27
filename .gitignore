@@ -1,3 +1,7 @@
 .venv
 OSSP_GIF/OSSP_GIF/settings.py
 ossp_aws.pem
+OSSP_GIF/db.sqlite3
+OSSP_GIF/gif_to_mp4/migrations/
+OSSP_GIF/gif_to_mp4/__pycache__/
+OSSP_GIF/OSSP_GIF/__pycache__/
