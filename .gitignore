@@ -1,5 +1,5 @@
 .venv
 OSSP_GIF/OSSP_GIF/settings.py
 ossp_aws.pem
-OSSP_GIF/db.splite3
+OSSP_GIF/db.sqlite3
 __pycache__/
