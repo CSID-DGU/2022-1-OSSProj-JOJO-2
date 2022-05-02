@@ -12,5 +12,7 @@ class MainView(View): # 회원가입 하는 View
 
     def post(self, request):
         form = URLform(request.POST)
-        ctx = {'form' : form}
+        print(form['your_name'].value())
+        #print(form['your_name'])
+        ctx = {'form':form}
         return render(request, self.template_name, ctx)
