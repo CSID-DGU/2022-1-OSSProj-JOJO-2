@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .forms import URLform
 from django.views import View
 # Create your views here.
-class MainView(View): # 회원가입 하는 View
+class MainView(View): 
     template_name = 'gif_to_mp4/main.html'
 
     def get(self, request):
@@ -12,7 +12,8 @@ class MainView(View): # 회원가입 하는 View
 
     def post(self, request):
         form = URLform(request.POST)
-        print(form['your_name'].value())
+        print(form['youtube_link'].value())
         #print(form['your_name'])
+        #ctx = {'form':form}
         ctx = {'form':form}
-        return render(request, self.template_name, ctx)
+        return render(request, self.template_name,ctx)
