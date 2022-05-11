@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from .forms import URLform
 from django.views import View
+
 import youtube_dl
+
 # Create your views here.
 class MainView(View): 
     template_name = 'gif_to_mp4/main.html'
@@ -21,9 +23,18 @@ class MainView(View):
         end = 0
         if form.is_valid():
             url = form.cleaned_data.get("youtube_link")
-            start = form.cleaned_data.get("start_minute")*60 + form.cleaned_data.get("start_second")
-            end = form.cleaned_data.get("end_minute")*60 + form.cleaned_data.get("end_second")
+            start_min = form.cleaned_data.get("start_minute")
+            start_sec = form.cleaned_data.get("start_second")
+            end_min = form.cleaned_data.get("end_minute")
+            end_sec = form.cleaned_data.get("end_second")
         print(start, end)
+
+        ydl_opts = {
+            "postprocessor_args": [
+                "-ss", "00:" + str(start_min) + ":" + str(start_sec),
+                "-to", "00:" + str(end_min) + ":" + str(end_sec)
+            ]
+        }
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
