@@ -28,15 +28,14 @@ class MainView(View):
             end_min = form.cleaned_data.get("end_minute")
             end_sec = form.cleaned_data.get("end_second")
 
-        ss = f"-ss 00:{start_min:02}:{start_sec:02}.00"
-        to = f"-to 00:{end_min:02}:{end_sec:02}.00"
-        print(ss, to)
+        ss = f"00:{start_min:02}:{start_sec:02}.00"
+        to = f"00:{end_min:02}:{end_sec:02}.00"
 
         ydl_opts = {
+            'format': "best",
+            'videoformat' : "mp4",
             'external_downloader': 'ffmpeg',
-            'external_downloader_args':  ss + " " + to,
-            '0': "%(format_id)s.%(resolution)s.%(id)s.v2.%(ext)s",
-            'format': "best"
+            'external_downloader_args':  ["-ss", ss, "-to", to]
         }
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
