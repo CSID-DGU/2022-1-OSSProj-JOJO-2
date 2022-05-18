@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from .forms import URLform
 from django.views import View
-
 import youtube_dl
 
 # Create your views here.
 class MainView(View): 
-    template_name = 'gif_to_mp4/main.html'
+    # template_name = 'gif_to_mp4/main.html'
+    template_name = 'gif_to_mp4/index.html'
 
     def get(self, request):
         form = URLform()
@@ -27,6 +27,9 @@ class MainView(View):
             start_sec = form.cleaned_data.get("start_second")
             end_min = form.cleaned_data.get("end_minute")
             end_sec = form.cleaned_data.get("end_second")
+            print("form valid", url, start_min,start_sec,end_min,end_sec)
+        else:
+            return render(request, self.template_name,ctx)
 
         ss = f"00:{start_min:02}:{start_sec:02}.00"
         to = f"00:{end_min:02}:{end_sec:02}.00"

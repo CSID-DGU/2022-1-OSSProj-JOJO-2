@@ -46,30 +46,35 @@
                                 <!-- Youtube link input-->
                                 <div class="row">
                                     <div class="col">
-                                        <input class="form-control form-control-lg" id="youtube_link" type="url" placeholder="https://www.youtube.com"
-                                                value="{{form.youtube_link.value|default_if_none:''}}" data-sb-validations="required" />
+                                        {{ form.youtube_link }}
+                                        <!-- <input class="form-control form-control-lg" id="youtube_link" type="url" placeholder="https://www.youtube.com"
+                                                value="{{form.youtube_link.value|default_if_none:''}}" data-sb-validations="required" /> -->
                                     </div>
                                 </div>
                                 <!-- 추출 시작 시간 입력-->
                                 <div class="row">
                                     <div class="col">
-                                        <input class="form-control form-control-lg" id="start_minute" type="number" placeholder="분(시작)"
-                                                value="{{form.start_minute.value}}" data-sb-validations="required" />
+                                        {{ form.start_minute }}
+                                        <!-- <input class="form-control form-control-lg" id="start_minute" type="number" placeholder="분(시작)"
+                                                value="{{form.start_minute.value}}" data-sb-validations="required" /> -->
                                     </div>
                                     <div class="col">
-                                        <input class="form-control form-control-lg" id="start_second" type="number" placeholder="초(시작)"
-                                                value="{{form.start_second.value}}" data-sb-validations="required" />
+                                        {{ form.start_second }}
+                                        <!-- <input class="form-control form-control-lg" id="start_second" type="number" placeholder="초(시작)"
+                                                value="{{form.start_second.value}}" data-sb-validations="required" /> -->
                                     </div>
                                 </div>
                                 <!-- 추출 종료 시간 입력-->
                                 <div class="row">
                                     <div class="col">
-                                        <input class="form-control form-control-lg" id="end_minute" type="number" placeholder="분(끝)"
-                                                value="{{form.end_minute.value}}" data-sb-validations="required" />
+                                        {{ form.end_minute }}
+                                        <!-- <input class="form-control form-control-lg" id="end_minute" type="number" placeholder="분(끝)"
+                                                value="{{form.end_minute.value}}" data-sb-validations="required" /> -->
                                     </div>
                                     <div class="col">
-                                        <input class="form-control form-control-lg" id="end_second" type="number" placeholder="초(끝)"
-                                                value="{{form.end_second.value}}" data-sb-validations="required" />
+                                        {{ form.end_second }}
+                                        <!-- <input class="form-control form-control-lg" id="end_second" type="number" placeholder="초(끝)"
+                                                value="{{form.end_second.value}}" data-sb-validations="required" /> -->
                                     </div>
                                 </div>
                                 <!-- 해상도 선택-->
