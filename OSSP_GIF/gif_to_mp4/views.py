@@ -15,9 +15,7 @@ class MainView(View):
 
     def post(self, request):
         form = URLform(request.POST)
-        print(form['youtube_link'].value())
-        #print(form['your_name'])
-        #ctx = {'form':form}
+        ctx = {'form':form}
 
         start = 0
         end = 0
@@ -27,7 +25,8 @@ class MainView(View):
             start_sec = form.cleaned_data.get("start_second")
             end_min = form.cleaned_data.get("end_minute")
             end_sec = form.cleaned_data.get("end_second")
-            print("form valid", url, start_min,start_sec,end_min,end_sec)
+            resolution = form.cleaned_data.get("resolution")
+            print("form valid", url, start_min,start_sec,end_min,end_sec,resolution)
         else:
             return render(request, self.template_name,ctx)
 
@@ -43,6 +42,4 @@ class MainView(View):
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
-
-        ctx = {'form':form, 'start':start, 'end':end}
         return render(request, self.template_name,ctx)
