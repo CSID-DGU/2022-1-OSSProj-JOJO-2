@@ -3,10 +3,15 @@ from .forms import URLform
 from django.views import View
 
 import youtube_dl
+import moviepy
 
 # Create your views here.
 class MainView(View): 
     template_name = 'gif_to_mp4/main.html'
+
+    def my_hook(d):
+        if d['status'] == 'finished':
+            print('Done downloading, now converting ...')
 
     def get(self, request):
         form = URLform()
@@ -31,11 +36,15 @@ class MainView(View):
         ss = f"00:{start_min:02}:{start_sec:02}.00"
         to = f"00:{end_min:02}:{end_sec:02}.00"
 
+        filename = "video.mp4"
+
         ydl_opts = {
             'format': "best",
             'videoformat' : "mp4",
+            'outtmpl' : filename,
             'external_downloader': 'ffmpeg',
-            'external_downloader_args':  ["-ss", ss, "-to", to]
+            'external_downloader_args':  ["-ss", ss, "-to", to],
+            'progress_hooks': [my_hook]
         }
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
