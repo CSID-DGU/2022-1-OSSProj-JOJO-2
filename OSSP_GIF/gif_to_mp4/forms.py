@@ -5,7 +5,7 @@ class URLform(forms.ModelForm):
     def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             for field in self.fields:
-                self.fields[field].widget.attrs.update({'class': 'form-control', 'ALIGN': 'center'})
+                self.fields[field].widget.attrs.update({'class': 'form-control form-control-lg', 'ALIGN': 'center'})
     choices=(("240" ,240),("360", 360),("480", 480),("720", 720))
     resolution = forms.ChoiceField(choices=choices)
     
@@ -16,11 +16,12 @@ class URLform(forms.ModelForm):
             'youtube_link': forms.URLInput(
                 attrs={
                     'placeholder': "https://www.youtube.com",
+                    'autocomplete': "off"
                 }
             ),
             'start_minute': forms.NumberInput(
                 attrs={
-                    'placeholder': '분(시작)'
+                    'placeholder': "분(시작)"
                 }
             ),
             'start_second': forms.NumberInput(
@@ -30,12 +31,12 @@ class URLform(forms.ModelForm):
             ),
             'end_minute': forms.NumberInput(
                 attrs={
-                    'placeholder': '분(끝)'
+                    'placeholder': "분(끝)"
                 }
             ),
             'end_second': forms.NumberInput(
                 attrs={
-                    'placeholder': "분(끝)"
+                    'placeholder': "초(끝)"
                 }
             ),
             # "resolution" : forms.NumberInput(
