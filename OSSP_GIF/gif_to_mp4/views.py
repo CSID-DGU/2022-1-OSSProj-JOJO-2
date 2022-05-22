@@ -2,16 +2,13 @@ from django.shortcuts import render
 from .forms import URLform
 from django.views import View
 
+import os
 import youtube_dl
-import moviepy
+from moviepy.editor import *
 
 # Create your views here.
 class MainView(View): 
     template_name = 'gif_to_mp4/main.html'
-
-    def my_hook(d):
-        if d['status'] == 'finished':
-            print('Done downloading, now converting ...')
 
     def get(self, request):
         form = URLform()
@@ -36,19 +33,26 @@ class MainView(View):
         ss = f"00:{start_min:02}:{start_sec:02}.00"
         to = f"00:{end_min:02}:{end_sec:02}.00"
 
-        filename = "video.mp4"
+        title = "video"
 
         ydl_opts = {
             'format': "best",
             'videoformat' : "mp4",
-            'outtmpl' : filename,
+            'outtmpl' : "video.mp4",
             'external_downloader': 'ffmpeg',
-            'external_downloader_args':  ["-ss", ss, "-to", to],
-            'progress_hooks': [my_hook]
+            'external_downloader_args':  ["-ss", ss, "-to", to]
         }
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
+            #title = ydl.extract_info(url, download=False)['title']
+
+        clip = VideoFileClip(title + '.mp4')
+        clip.write_gif(title + '.gif')
+        clip.close()
+        
+        os.remove('video.mp4')
 
         ctx = {'form':form, 'start':start, 'end':end}
         return render(request, self.template_name,ctx)
+    
