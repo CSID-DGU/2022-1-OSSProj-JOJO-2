@@ -39,6 +39,9 @@ class MainView(View):
         ss = f"00:{start_min:02}:{start_sec:02}.00"
         to = f"00:{end_min:02}:{end_sec:02}.00"
 
+        if os.path.exists('video.gif'):
+            os.remove('video.gif')
+
         title = "video"
 
         ydl_opts = {
