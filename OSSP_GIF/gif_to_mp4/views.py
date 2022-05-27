@@ -39,6 +39,14 @@ class MainView(View):
         ss = f"00:{start_min:02}:{start_sec:02}.00"
         to = f"00:{end_min:02}:{end_sec:02}.00"
 
+        try:
+            fs.close()
+        except:
+            print()
+
+        if os.path.exists('video.mp4'):
+            os.remove('video.mp4')
+
         if os.path.exists('video.gif'):
             os.remove('video.gif')
 
