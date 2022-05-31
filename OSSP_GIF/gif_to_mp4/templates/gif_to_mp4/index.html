@@ -49,6 +49,22 @@
                             <!-- To make this form functional, sign up at-->
                             <!-- https://startbootstrap.com/solution/contact-forms-->
                             <!-- to get an API token!-->
+                            {% if messages %}
+
+                            <div class="messages">
+
+                                {% for message in messages %}
+
+                                <div class="alert alert-{% if message.tag %}{{ message.tags }}{% endif %}" role="alert">
+
+                                    {{ message }}
+
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+                            {% endif %}
                             <form method="post" class="form-subscribe" id="contactForm" data-sb-form-api-token="API_TOKEN">
                                 {% csrf_token %}
                                 <!-- Youtube link input-->

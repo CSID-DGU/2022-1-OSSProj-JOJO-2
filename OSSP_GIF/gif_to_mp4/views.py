@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import URLform
 from django.views import View
+from django.contrib import messages
 
 import os
 import youtube_dl
@@ -11,7 +12,6 @@ from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 class MainView(View): 
-    # template_name = 'gif_to_mp4/main.html'
     template_name = 'gif_to_mp4/index.html'
 
     def get(self, request):
@@ -22,9 +22,6 @@ class MainView(View):
     def post(self, request):
         form = URLform(request.POST)
         ctx = {'form':form}
-
-        start = 0
-        end = 0
         if form.is_valid():
             url = form.cleaned_data.get("youtube_link")
             start_min = form.cleaned_data.get("start_minute")
@@ -32,7 +29,10 @@ class MainView(View):
             end_min = form.cleaned_data.get("end_minute")
             end_sec = form.cleaned_data.get("end_second")
             resolution = form.cleaned_data.get("resolution")
-            print("form valid", url, start_min,start_sec,end_min,end_sec,resolution)
+            diff = 60 * start_min + start_sec - (60 * end_min - end_sec)
+            if diff <0 or 5 < diff:
+                messages.add_message(request, 30, '시작 시간과 끝 시간의 차이를 1~5초 사이로 맞춰주세요')
+                return render(request, self.template_name, ctx) 
         else:
             return render(request, self.template_name,ctx)
 
