@@ -19,31 +19,24 @@ class MainView(View):
         form = URLform()
         ctx = {'form':form}
         try:
-            if task_id:
-                print("task_id 있음 으로 들어옴")
-                print(task_id)
-                print(task_id.ready())
-                while not task_id.ready():
-                    time.sleep(2)
-                    print("while문")
-
-                if task_id.failed():
+            while not task_id.ready():
+               if task_id.failed():
                     messages.add_message(request,30, '오류가 발생했습니다 다시 시도해 주세요')
                     return render(request, self.template_name, ctx)
-                messages.add_message(request,30, '동영상이 모두 다운로드 되었습니다!')
-                title = "video"
-                clip = VideoFileClip(title + '.mp4')
-                clip.write_gif(title + '.gif')
-                clip.close()
-                os.remove('video.mp4')
-                file_path = os.path.abspath("./")
-                file_name = os.path.basename("./" + title + ".gif")
-                fs = FileSystemStorage(file_path)
-                response = FileResponse(fs.open(file_name, 'rb'),
-                                        content_type='image/gif')
-                response['Content-Disposition'] = f'attachment; filename=video.gif'
-                # 여기서 return 하면 새로고침 할 때 계속 post라서 문제임.. 고쳐야함
-                return response
+            messages.add_message(request,30, '동영상이 모두 다운로드 되었습니다!')
+            title = "video"
+            clip = VideoFileClip(title + '.mp4')
+            clip.write_gif(title + '.gif')
+            clip.close()
+            os.remove('video.mp4')
+            file_path = os.path.abspath("./")
+            file_name = os.path.basename("./" + title + ".gif")
+            fs = FileSystemStorage(file_path)
+            response = FileResponse(fs.open(file_name, 'rb'),
+                                    content_type='image/gif')
+            response['Content-Disposition'] = f'attachment; filename=video.gif'
+            # 여기서 return 하면 새로고침 할 때 계속 post라서 문제임.. 고쳐야함
+            return response
         except:
             print("task 로 안 들어옴")
             #print(task_id.ready())
@@ -73,7 +66,6 @@ class MainView(View):
         data = json.dumps(dic, indent = 4)
         global task_id 
         t = downloand_video.delay(data)
-        task_id = t
         print(t.ready())
         print(task_id.ready())
         messages.add_message(request, 30, '유투브를 다운로드 중 입니다 <br/> 창을 닫거나 새로고침하지 말아주세요')
