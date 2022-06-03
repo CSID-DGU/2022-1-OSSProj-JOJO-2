@@ -1,6 +1,7 @@
 import youtube_dl,os, json
 from celery import shared_task
 from celery.exceptions import Ignore
+from moviepy.editor import *
 @shared_task() 
 def downloand_video(data):
     try:
@@ -23,6 +24,10 @@ def downloand_video(data):
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
+        # title = "video"
+        # clip = VideoFileClip(title + '.mp4')
+        # clip.write_gif(title + '.gif')
+        # clip.close()
     except:
         raise Ignore()
         
