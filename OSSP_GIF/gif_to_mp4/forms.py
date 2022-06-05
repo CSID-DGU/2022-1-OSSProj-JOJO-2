@@ -16,36 +16,33 @@ class URLform(forms.ModelForm):
             'youtube_link': forms.URLInput(
                 attrs={
                     'placeholder': "https://www.youtube.com",
-                    'autocomplete': "off"
+                    'autocomplete': "off",
+                    'id' : 'youtube_link'
                 }
             ),
             'start_minute': forms.NumberInput(
                 attrs={
-                    'placeholder': "분(시작)"
+                    'placeholder': "분(시작)",
+                    'id' : "start_minute"
                 }
             ),
             'start_second': forms.NumberInput(
                 attrs={
-                    'placeholder': "초(시작)"
+                    'placeholder': "초(시작)",
+                    'id' : 'start_second'
                 }
             ),
             'end_minute': forms.NumberInput(
                 attrs={
-                    'placeholder': "분(끝)"
+                    'placeholder': "분(끝)",
+                    'id':'end_minute'
                 }
             ),
             'end_second': forms.NumberInput(
                 attrs={
-                    'placeholder': "초(끝)"
+                    'placeholder': "초(끝)",
+                    'id' : 'end_second'
                 }
             ),
-            # "resolution" : forms.NumberInput(
-            #     attrs ={
-            #         'placeholder': "해상도를 선택해주세요"
-            #     },
-
-            #     choices=(("240" ,240),("360", 360),("480", 480),("720", 720))
-            # )
-
         }
     

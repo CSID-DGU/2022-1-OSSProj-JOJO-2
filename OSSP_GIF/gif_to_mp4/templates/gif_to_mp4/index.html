@@ -16,6 +16,9 @@
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
     </head>
     <body>
         <!-- Navigation-->
@@ -41,9 +44,12 @@
                         <div class="text-center text-white">
                             <!-- Page heading-->
                             <h1 class="mb-5">Convert Youtube to GIF</h1>
-                            
-                            <!-- to get an API token!-->
-                            <form name="contactForm" method="post" class="form-subscribe" id="contactForm" data-sb-form-api-token="API_TOKEN">
+                            <img id = "spinner" src = "{% static 'css/spinner.gif' %}" >
+                            <br>
+                            <div id = "message">
+                            </div>
+                            <br>
+                            <form name="contactForm" class="form-subscribe" id="contactForm" data-sb-form-api-token="API_TOKEN">
                                 {% csrf_token %}
                                 <!-- Youtube link input-->
                                 <div class="row">
@@ -73,18 +79,12 @@
                                 <div class="row">
                                     <div class="col">
                                         {{ form.resolution }}
-                                        <!-- <select class="form-select" aria-label=".form-select-lg" required>
-                                            <option selected>해상도를 선택하세요</option>
-                                            <option value="240">240</option>
-                                            <option value="360">360</option>
-                                            <option value="480">480</option>
-                                            <option value="720">720</option>
-                                        </select> -->
                                     </div>
                                 </div>
                                 
                                 <!-- submit 버튼-->
                                 <div class="col-auto">
+                                    <!-- <input class="btn btn-primary btn-lg" id="submitButton" value="Convert" type="submit" onclick="clickSubmit(this);"></input> -->
                                     <input class="btn btn-primary btn-lg" id="submitButton" value="Convert" type="submit" onclick="clickSubmit(this);"></input>
                                 </div>
                             </form>
