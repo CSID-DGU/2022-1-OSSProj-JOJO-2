@@ -1,7 +1,7 @@
 import youtube_dl,os, json
 from celery import shared_task
 from celery.exceptions import Ignore
-from moviepy.editor import *
+# from moviepy.editor import *
 @shared_task() 
 def downloand_video(data):
     try:

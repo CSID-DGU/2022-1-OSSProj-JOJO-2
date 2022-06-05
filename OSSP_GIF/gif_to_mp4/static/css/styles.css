@@ -63,7 +63,7 @@
   --bs-body-color: #212529;
   --bs-body-bg: #fff;
 }
-
+#spinner { visibility: hidden; }
 *,
 *::before,
 *::after {
