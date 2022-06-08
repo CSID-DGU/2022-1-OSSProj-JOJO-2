@@ -19,16 +19,15 @@ GifSocket.onmessage = function(e) {
     document.getElementById("submitButton").disabled = false;
     downloading = true
     document.getElementById("message").textContent = "동영상이 모두 다운로드 되었습니다!";
-    $('#spinner').css('visibility', 'hidden');
+    spinner.style.visibility = 'visible';
   }else{
-    sleep(4000);
+    sleep(6000);
     send_message();
     console.log("status 물어보는 중")  
   }
 };
 
 function clickSubmit(this1){
-  $('#spinner').css('visibility', 'visible');
   document.getElementById("submitButton").disabled = true;
   var url = document.querySelector('#youtube_link').value;
   var s_m = document.querySelector('#start_minute').value;
@@ -39,8 +38,10 @@ function clickSubmit(this1){
   console.log(diff)
   if (5 < diff){
     alert("최대 변환 길이는 5초 입니다")
+    document.getElementById("message").textContent = "최대 변환 길이는 5초 입니다.";
   }else if (diff < 0){
     alert("1초 이상의 값을 입력해 주세요.")
+    document.getElementById("message").textContent = "1초 이상의 값을 입력해 주세요.";
   }else if (diff < 6 && 0 < diff){
     spinner.style.visibility = 'visible';
     console.log("form 보냄 socekt도 보냄")
@@ -59,11 +60,13 @@ function clickSubmit(this1){
   }
   else{
     alert("올바른 값을 입력해 주세요")
+    document.getElementById("message").textContent = "올바른 값을 입력해 주세요";
+
   }
 }
 function sleep(ms) {
   const wakeUpTime = Date.now() + ms;
-  while (Date.now() < wakeUpTime) {}
+  while (Date.now() < wakeUpTime) { continue }
 }
 function send_message(){
   GifSocket.send(data = JSON.stringify({
