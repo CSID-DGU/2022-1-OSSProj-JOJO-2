@@ -18,10 +18,15 @@ class MainView(View):
 def gif(request):
     title = 'video'
     # os.remove('video.mp4')
+    # file_path = os.path.abspath("./")
+    # file_name = os.path.basename("./" + title + ".mp4")
+    # fs = FileSystemStorage(file_path)
+    # response = FileResponse(fs.open(file_name, 'rb'),
+    #                         content_type='video/mp4')
     file_path = os.path.abspath("./")
-    file_name = os.path.basename("./" + title + ".mp4")
+    file_name = os.path.basename("./" + title + ".gif")
     fs = FileSystemStorage(file_path)
     response = FileResponse(fs.open(file_name, 'rb'),
-                            content_type='video/mp4')
-    response['Content-Disposition'] = f'attachment; filename=video.mp4'
+                            content_type='image/gif')
+    response['Content-Disposition'] = f'attachment; filename=video.gif'
     return response
