@@ -6,7 +6,7 @@ from django.core.asgi import get_asgi_application
 import gif_to_mp4.routing
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
-
+django.setup()
 application = ProtocolTypeRouter({
   "http": get_asgi_application(),
   "websocket": AuthMiddlewareStack(

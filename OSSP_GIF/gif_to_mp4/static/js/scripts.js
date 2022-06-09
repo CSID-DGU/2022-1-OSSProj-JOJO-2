@@ -9,7 +9,8 @@
 // 로딩 화면 구현할 경우 수정
 const GifSocket = new WebSocket(
   'ws://'
-  + window.location.host
+  + window.location.host + ":8000"
+  + '/'
 );
 GifSocket.onmessage = function(e) {
   const data = JSON.parse(e.data);
@@ -17,11 +18,11 @@ GifSocket.onmessage = function(e) {
     window.location = 'gif';
     document.getElementById("submitButton").disabled = false;
     document.getElementById("message").textContent = "동영상이 모두 다운로드 되었습니다!";
-    spinner.style.visibility = 'visible';
+    spinner.style.visibility = 'hidden';
   }else{
     sleep(6000);
     send_message();
-    console.log("status 물어보는 중")  
+    console.log("status 물어보는 중")
   }
 };
 
