@@ -1,0 +1,18 @@
+[Unit]
+Description=daphne daemon
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/srv/2022-1-OSSProj-JOJO-2/OSSP_GIF
+
+Environment="DJANGO_SETTINGS_MODULE=OSSP_GIF.settings"
+ExecStart=/home/ubuntu/venv/bin/daphne -b 0.0.0.0 -p 8000 OSSP_GIF.asgi:application
+
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=on-abort
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
