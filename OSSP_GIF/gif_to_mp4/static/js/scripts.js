@@ -7,29 +7,26 @@
 // Use this file to add JavaScript to your project
 
 // 로딩 화면 구현할 경우 수정
-var downloading = false;
 const GifSocket = new WebSocket(
   'ws://'
-  + window.location.host
+  + window.location.host + ":8000"
+  + '/'
 );
 GifSocket.onmessage = function(e) {
   const data = JSON.parse(e.data);
   if (data.message == 'Done'){
     window.location = 'gif';
     document.getElementById("submitButton").disabled = false;
-    downloading = true
     document.getElementById("message").textContent = "동영상이 모두 다운로드 되었습니다!";
-    $('#spinner').css('visibility', 'hidden');
+    spinner.style.visibility = 'hidden';
   }else{
-    sleep(4000);
+    sleep(6000);
     send_message();
-    console.log("status 물어보는 중")  
+    console.log("status 물어보는 중")
   }
 };
 
 function clickSubmit(this1){
-  $('#spinner').css('visibility', 'visible');
-  document.getElementById("submitButton").disabled = true;
   var url = document.querySelector('#youtube_link').value;
   var s_m = document.querySelector('#start_minute').value;
   var s_s = document.querySelector('#start_second').value;
@@ -39,10 +36,13 @@ function clickSubmit(this1){
   console.log(diff)
   if (5 < diff){
     alert("최대 변환 길이는 5초 입니다")
+    document.getElementById("message").textContent = "최대 변환 길이는 5초 입니다.";
   }else if (diff < 0){
     alert("1초 이상의 값을 입력해 주세요.")
+    document.getElementById("message").textContent = "1초 이상의 값을 입력해 주세요.";
   }else if (diff < 6 && 0 < diff){
     spinner.style.visibility = 'visible';
+    document.getElementById("submitButton").disabled = true;
     console.log("form 보냄 socekt도 보냄")
     GifSocket.send(data = JSON.stringify({
       'status' : '',
@@ -53,17 +53,18 @@ function clickSubmit(this1){
       'end_second' : e_s
     }))
     // this1.form.submit(); 그냥 socket으로 처리
-    downloading = true;
     document.getElementById("message").textContent = "동영상을 다운로드 중 입니다.  새로고침을 하지 말아주세요";
     this1.form.reset();
   }
   else{
     alert("올바른 값을 입력해 주세요")
+    document.getElementById("message").textContent = "올바른 값을 입력해 주세요";
+
   }
 }
 function sleep(ms) {
   const wakeUpTime = Date.now() + ms;
-  while (Date.now() < wakeUpTime) {}
+  while (Date.now() < wakeUpTime) { continue }
 }
 function send_message(){
   GifSocket.send(data = JSON.stringify({
