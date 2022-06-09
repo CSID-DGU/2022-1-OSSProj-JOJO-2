@@ -6,8 +6,6 @@ class URLform(forms.ModelForm):
             super().__init__(*args, **kwargs)
             for field in self.fields:
                 self.fields[field].widget.attrs.update({'class': 'form-control form-control-lg', 'ALIGN': 'center'})
-    choices=(("240" ,240),("360", 360),("480", 480),("720", 720))
-    resolution = forms.ChoiceField(choices=choices)
     
     class Meta:
         model = FormModel

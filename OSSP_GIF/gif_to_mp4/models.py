@@ -10,4 +10,3 @@ class FormModel(models.Model):
     start_second = models.IntegerField()
     end_minute = models.IntegerField()
     end_second = models.IntegerField()
-    resolution = models.IntegerField()
