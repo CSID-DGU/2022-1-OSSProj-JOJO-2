@@ -13,7 +13,7 @@
 * Nginx
 * AWS EC2
 * Ubuntu
----
+
 ## 시스템 구조
 
 ![](https://velog.velcdn.com/images/l_cloud/post/0426d824-c71d-4cc4-8107-fcb857f14f28/image.png)
@@ -42,7 +42,6 @@ celery의 메세지 브로커로는 Rabbitmq를 사용하였습니다.
 
 &nbsp;
 
----
 
 ## 동작화면 
 
@@ -69,7 +68,7 @@ celery의 메세지 브로커로는 Rabbitmq를 사용하였습니다.
 
 &nbsp;
 
----
+
  
 ## 간략한 코드로 보는 동작 방식
 
@@ -95,7 +94,7 @@ class MainView(View):
     ...
 
 ```
----
+
 #### 2. User에서 웹소켓 연결
 
 ```javascript
@@ -142,7 +141,6 @@ function clickSubmit(this1){
   }
 }
 ```
----
 #### 3. Server에서 websocket 응답 처리
 
 ```python
@@ -170,7 +168,7 @@ websocket_urlpatterns = [
             }))
             ...
 ```
----
+
 #### 4.Youtube download celery를 통한 비동기 처리
 
 ```python
@@ -206,7 +204,7 @@ def downloand_video(data):
         raise Ignore()
         
 ```
----
+
 #### 5. client의 다운로드 상태확인 요청과 그 응답
 
 ```javascript
@@ -235,7 +233,6 @@ if self.t and self.t.ready(): # 작업 끝
 
 
 ```
----
 #### 6. 다운로드 완료 후 그 응답
 client
 ```javascript
@@ -259,7 +256,6 @@ def gif(request):
     return response
 ```
   
----
 
 ### Linux systemctl Demon 설정 파일 및 설명
 
@@ -373,7 +369,6 @@ def debug_task(self):
 
 &nbsp;
 
----
 
 &nbsp;
 
@@ -385,8 +380,6 @@ def debug_task(self):
 * [장지욱](https://github.com/jjwk28) 프론트
 
 &nbsp;
-
----
 
 &nbsp;
 
