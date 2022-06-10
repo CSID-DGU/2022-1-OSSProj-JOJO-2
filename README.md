@@ -1,8 +1,7 @@
 
 
-## youtube link 입력만으로 GIF를 만들어주는 사이트입니다.
----
-&nbsp;
+# youtube link 입력만으로 GIF를 만들어주는 사이트입니다.
+
   
 ## 사용한 오픈소스 및 툴
 * [Youtube-dl](https://github.com/ytdl-org/youtube-dl)
@@ -70,6 +69,196 @@ celery의 메세지 브로커로는 Rabbitmq를 사용하였습니다.
 
 &nbsp;
 
+---
+ 
+## 간략한 코드로 보는 동작 방식
+
+ <Br>
+
+#### 1. URL로 들어오면 Get 요청에 대한 응답
+
+```python
+# urls.py URL 확인 후 올바른 view로 가도록 지시
+...
+urlpatterns = [
+    path('',views.MainView.as_view(), name = 'home'),
+    ...
+# Views.py 
+...
+class MainView(View): 
+    template_name = 'gif_to_mp4/index.html'
+
+    def get(self, request):
+        form = URLform()
+        ctx = {'form':form}
+        return render(request, self.template_name, ctx)
+    ...
+
+```
+---
+#### 2. User에서 웹소켓 연결
+
+```javascript
+# 웹소켓 연결
+const GifSocket = new WebSocket(
+  'ws://'
+  + window.location.host + ":8000"
+  + '/'
+);
+# Youtube 링크 및 정보 server에 보내는 코드
+function clickSubmit(this1){
+  var url = document.querySelector('#youtube_link').value;
+  var s_m = document.querySelector('#start_minute').value;
+  var s_s = document.querySelector('#start_second').value;
+  var e_m = document.querySelector('#end_minute').value;
+  var e_s = document.querySelector('#end_second').value;
+  var diff = 60 * e_m + e_s - (60 * s_m + s_s)
+  console.log(diff)
+  if (5 < diff){
+    alert("최대 변환 길이는 5초 입니다")
+    document.getElementById("message").textContent = "최대 변환 길이는 5초 입니다.";
+  }else if (diff < 0){
+    alert("1초 이상의 값을 입력해 주세요.")
+    document.getElementById("message").textContent = "1초 이상의 값을 입력해 주세요.";
+  }else if (diff < 6 && 0 < diff){
+    spinner.style.visibility = 'visible';
+    document.getElementById("submitButton").disabled = true;
+    console.log("form 보냄 socekt도 보냄")
+    GifSocket.send(data = JSON.stringify({
+      'status' : '',
+      'youtube_link' : url,
+      'start_minute': s_m,
+      'start_second' : s_s,
+      'end_minute' : e_m,
+      'end_second' : e_s
+    }))
+    // this1.form.submit(); 그냥 socket으로 처리
+    document.getElementById("message").textContent = "동영상을 다운로드 중 입니다.  새로고침을 하지 말아주세요";
+    this1.form.reset();
+  }
+  else{
+    alert("올바른 값을 입력해 주세요")
+    document.getElementById("message").textContent = "올바른 값을 입력해 주세요";
+  }
+}
+```
+---
+#### 3. Server에서 websocket 응답 처리
+
+```python
+# routing.py 일부 소켓 path에 따른 연결 정보 처리
+websocket_urlpatterns = [
+    re_path(r'', sockets.GifConsumer.as_asgi()),
+# sockets.py 일부 메세지 받으면 다운로드 처리
+ def receive(self, text_data):   
+        data_json = json.loads(text_data)
+        if not data_json['status']:
+            print(data_json['status'])
+            url = data_json["youtube_link"]
+            start_min = int(data_json["start_minute"])
+            start_sec = int(data_json["start_second"])
+            end_min = int(data_json["end_minute"])
+            end_sec = int(data_json["end_second"])
+            # print(start_min,type(start_min))
+            ss = f"00:{start_min:02}:{start_sec:02}.00"
+            to = f"00:{end_min:02}:{end_sec:02}.00"
+            dic = {'url' : url, "ss" : ss, "to" : to}
+            data = json.dumps(dic, indent = 4)
+            self.t = downloand_video.delay(data) # celery
+            self.send(text_data=json.dumps({
+                'message': "Doing"
+            }))
+            ...
+```
+---
+#### 4.Youtube download celery를 통한 비동기 처리
+
+```python
+# task.py
+...
+@shared_task() 
+def downloand_video(data):
+    try:
+        data = json.loads(data)
+        url, ss ,to = data['url'], data['ss'],data['to']
+
+        if os.path.exists('video.mp4'):
+            os.remove('video.mp4')
+
+        if os.path.exists('video.gif'):
+            os.remove('video.gif')
+
+        ydl_opts = {
+            'format': "best",
+            'videoformat' : "mp4",
+            'outtmpl' : "video.mp4",
+            'external_downloader': 'ffmpeg',
+            'external_downloader_args':  ["-ss", ss, "-to", to],
+        }
+
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+        title = "video"
+        clip = VideoFileClip(title + '.mp4')
+        clip.write_gif(title + '.gif')
+        clip.close()
+    except:
+        raise Ignore()
+        
+```
+---
+#### 5. client의 다운로드 상태확인 요청과 그 응답
+
+```javascript
+function send_message(){
+  GifSocket.send(data = JSON.stringify({
+    'status' : 'yes'
+  }))
+}
+... 
+    # 메세지 확인하며 상태에 따라 보내느 함수 일부
+    sleep(6000);
+    send_message();
+    console.log("status 물어보는 중")
+```
+
+server의 응답
+```python
+if self.t and self.t.ready(): # 작업 끝
+                self.send(text_data = json.dumps({
+                    'message': "Done" # 완료 메세지
+                }))
+            else: # 작업 진행 중
+                self.send(text_data = json.dumps({
+                    'message': "Doing"
+                }))
+
+
+```
+---
+#### 6. 다운로드 완료 후 그 응답
+client
+```javascript
+if (data.message == 'Done'){
+    window.location = 'gif'; # gif 요청
+    document.getElementById("submitButton").disabled = false;
+    document.getElementById("message").textContent = "동영상이 모두 다운로드 되었습니다!";
+    spinner.style.visibility = 'hidden';
+```
+
+server
+```python
+def gif(request):
+    title = 'video'
+    file_path = os.path.abspath("./")
+    file_name = os.path.basename("./" + title + ".gif")
+    fs = FileSystemStorage(file_path)
+    response = FileResponse(fs.open(file_name, 'rb'),
+                            content_type='image/gif')
+    response['Content-Disposition'] = f'attachment; filename=video.gif'
+    return response
+```
+  
 ---
 
 ### Linux systemctl Demon 설정 파일 및 설명
@@ -149,8 +338,7 @@ PrivateTmp=true
 [Install]
 WantedBy=multi-user.target
 ```
-
-
+ 
 &nbsp;
 
 *celery*
