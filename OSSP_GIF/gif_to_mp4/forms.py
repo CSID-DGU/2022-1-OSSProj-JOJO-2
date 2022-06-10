@@ -9,7 +9,7 @@ class URLform(forms.ModelForm):
     
     class Meta:
         model = FormModel
-        fields = ["youtube_link","start_minute","start_second","end_minute","end_second","resolution"] # 일단 해상도 없이
+        fields = ["youtube_link","start_minute","start_second","end_minute","end_second"] # 일단 해상도 없이
         widgets = {
             'youtube_link': forms.URLInput(
                 attrs={

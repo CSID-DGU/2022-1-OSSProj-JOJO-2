@@ -59,7 +59,6 @@ function clickSubmit(this1){
   else{
     alert("올바른 값을 입력해 주세요")
     document.getElementById("message").textContent = "올바른 값을 입력해 주세요";
-
   }
 }
 function sleep(ms) {
