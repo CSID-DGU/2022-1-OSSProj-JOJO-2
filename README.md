@@ -1,6 +1,6 @@
 
 
-# youtube link 입력만으로 GIF를 만들어주는 사이트입니다.
+# youtube link 입력만으로 GIF를 만들어주는 사이트
 
   
 ## 사용한 오픈소스 및 툴
@@ -385,4 +385,4 @@ def debug_task(self):
 
 ## License
 
-여기만 추가해 주세요
+* [GNU GENERAL PUBLIC LICENSE](https://github.com/CSID-DGU/2022-1-OSSProj-JOJO-2/blob/main/LICENSE.md)
